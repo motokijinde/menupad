@@ -1,0 +1,36 @@
+# Claude Code
+.claude/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Xcode ユーザー固有設定
+xcuserdata/
+*.xcuserstate
+*.xcuserdatad/
+
+# Xcode ビルド成果物
+build/
+DerivedData/
+*.o
+*.d
+
+# Xcode 旧形式ファイル
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.xccheckout
+*.moved-aside
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# アーカイブ・配布
+*.xcarchive
+*.ipa
+*.dSYM.zip
+*.dSYM
