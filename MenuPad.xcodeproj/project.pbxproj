@@ -12,10 +12,10 @@
 		B6C7D8E9F0A1B6C7D8E9F0A1 /* PadTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C6D7E8F9A0B5C6D7E8F9A0 /* PadTextView.swift */; };
 		B8C9D0E1F2A3B8C9D0E1F2A3 /* WhitespaceLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C8D9E0F1A2B7C8D9E0F1A2 /* WhitespaceLayoutManager.swift */; };
 		C0D1E2F3A4B5C0D1E2F3A4B5 /* PreferencesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9C0D1E2F3A4B9C0D1E2F3A4 /* PreferencesManager.swift */; };
-		FA1B2C3D4E5F6A7B /* LineNumberRulerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1B2C3D4E5F6A7B /* LineNumberRulerView.swift */; };
 		C2D3E4F5A6B7C2D3E4F5A6B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C1D2E3F4A5B6C1D2E3F4A5B6 /* Assets.xcassets */; };
 		D1E2F3A4B5C6D1E2F3A4B5C6 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0E1F2A3B4C5D0E1F2A3B4C5 /* Cocoa.framework */; };
 		E1F2A3B4C5D6E1F2A3B4C5D6 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F1A2B3C4D5E0F1A2B3C4D5 /* main.swift */; };
+		FA1B2C3D4E5F6A7B /* LineNumberRulerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1B2C3D4E5F6A7B /* LineNumberRulerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,11 +25,11 @@
 		B5C6D7E8F9A0B5C6D7E8F9A0 /* PadTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PadTextView.swift; sourceTree = "<group>"; };
 		B7C8D9E0F1A2B7C8D9E0F1A2 /* WhitespaceLayoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhitespaceLayoutManager.swift; sourceTree = "<group>"; };
 		B9C0D1E2F3A4B9C0D1E2F3A4 /* PreferencesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesManager.swift; sourceTree = "<group>"; };
-		FB1B2C3D4E5F6A7B /* LineNumberRulerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineNumberRulerView.swift; sourceTree = "<group>"; };
 		C1D2E3F4A5B6C1D2E3F4A5B6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C3D4E5F6A7B8C3D4E5F6A7B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D0E1F2A3B4C5D0E1F2A3B4C5 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		E0F1A2B3C4D5E0F1A2B3C4D5 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		FB1B2C3D4E5F6A7B /* LineNumberRulerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineNumberRulerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -296,7 +296,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.menupad;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -322,7 +322,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.menupad;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
