@@ -9,10 +9,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         setupStatusItem()
         setupMainMenu()
         windowController = PadWindowController()
+
+        NSWorkspace.shared.notificationCenter.addObserver(
+            self,
+            selector: #selector(workspaceDidActivateApp(_:)),
+            name: NSWorkspace.didActivateApplicationNotification,
+            object: nil
+        )
     }
 
-    func applicationDidResignActive(_ notification: Notification) {
+    @objc private func workspaceDidActivateApp(_ notification: Notification) {
         guard !PreferencesManager.shared.alwaysOnTop else { return }
+        guard let activeApp = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication,
+              activeApp.bundleIdentifier != Bundle.main.bundleIdentifier,
+              activeApp.activationPolicy == .regular else { return }
         windowController?.window?.orderOut(nil)
     }
 
@@ -106,8 +116,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc func toggleWindow() {
         guard let wc = windowController, let window = wc.window else { return }
-        if window.isVisible {
+        if window.isVisible && window.isKeyWindow {
             window.orderOut(nil)
+            NSApp.deactivate()
         } else {
             wc.reloadIfNeeded()
             AppDelegate.activateApp()
@@ -170,12 +181,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         windowController?.padTextView?.setShowsInvisibles(newValue)
     }
 
-    // macOS 14 で activate(ignoringOtherApps:) が非推奨になった。
     static func activateApp() {
-        if #available(macOS 14.0, *) {
-            NSApp.activate()
-        } else {
-            NSApp.activate(ignoringOtherApps: true)
-        }
+        NSRunningApplication.current.activate(options: .activateIgnoringOtherApps)
     }
 }

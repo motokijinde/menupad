@@ -54,7 +54,7 @@ class PadWindowController: NSWindowController {
         panel.titleVisibility = .hidden
         panel.minSize = NSSize(width: 420, height: 150)
         panel.isFloatingPanel = true
-        panel.hidesOnDeactivate = false
+        panel.hidesOnDeactivate = !PreferencesManager.shared.alwaysOnTop
         panel.level = PreferencesManager.shared.alwaysOnTop ? .floating : .normal
 
         super.init(window: panel)
@@ -286,6 +286,7 @@ class PadWindowController: NSWindowController {
 
     func setAlwaysOnTop(_ enabled: Bool) {
         window?.level = enabled ? .floating : .normal
+        (window as? NSPanel)?.hidesOnDeactivate = !enabled
     }
 
     @objc func save() {
@@ -484,6 +485,14 @@ extension PadWindowController: NSSearchFieldDelegate {
 // MARK: - NSWindowDelegate
 
 extension PadWindowController: NSWindowDelegate {
+    func windowDidResignKey(_ notification: Notification) {
+        guard !PreferencesManager.shared.alwaysOnTop else { return }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) { [weak self] in
+            guard let window = self?.window, window.isVisible, !window.isKeyWindow else { return }
+            window.orderOut(nil)
+        }
+    }
+
     func windowDidBecomeKey(_ notification: Notification) {
         DispatchQueue.main.async { [weak self] in
             guard let tv = self?.padTextView,

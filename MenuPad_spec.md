@@ -1,6 +1,6 @@
 # MenuPad — Mac メニューバーメモ帳アプリ 仕様書
 
-バージョン: 1.2
+バージョン: 1.2.1
 対象 OS: macOS 13.0 (Ventura) 以上
 言語: Swift / AppKit ベース（SwiftUI 不使用）
 
@@ -41,6 +41,16 @@
 | 13 | 追加 | 非アクティブ時にウィンドウを自動非表示（常に前面がOFF のとき） |
 | 14 | 追加 | 行番号表示（LineNumberRulerView） |
 | 15 | 削除 | フォント変更（NSFontPanel 連携）を削除 |
+
+### v1.2 → v1.2.1
+
+| # | 種別 | 内容 |
+|---|------|------|
+| 1 | バグ修正 | `NSApp.activate()` を `NSRunningApplication.current.activate(options: .activateIgnoringOtherApps)` に変更（macOS 14+ で LSUIElement アプリのアクティブ化が確実に動作するよう修正） |
+| 2 | バグ修正 | `panel.hidesOnDeactivate` を `!alwaysOnTop` に変更（常前面OFF 時にアプリ非アクティブ化で自動非表示される標準挙動を利用） |
+| 3 | バグ修正 | アプリ非アクティブ化の検知を `applicationDidResignActive` → `NSWorkspace.didActivateApplicationNotification` 監視に変更 |
+| 4 | バグ修正 | `windowDidResignKey` にフォールバック非表示処理を追加 |
+| 5 | バグ修正 | `toggleWindow` でウィンドウを手動で閉じたとき `NSApp.deactivate()` を呼び出しアプリを非アクティブ化 |
 
 ---
 
@@ -124,14 +134,9 @@ AppDelegate  [@NSApplicationMain]
 
 **非アクティブ時の自動非表示:**
 
-`applicationDidResignActive` で他アプリに切り替わったことを検知し、常前面がOFF のときだけ `orderOut` する。常前面ONのときはそのまま表示し続ける。
+`NSWorkspace.didActivateApplicationNotification` で通常アプリ（`activationPolicy == .regular`）がアクティブになったことを検知し、常前面がOFF のときだけ `orderOut` する。加えて `PadPanel.hidesOnDeactivate = true`（常前面OFF 時）を設定することで、macOS 標準のパネル自動非表示機能も併用している。
 
-```swift
-func applicationDidResignActive(_ notification: Notification) {
-    guard !PreferencesManager.shared.alwaysOnTop else { return }
-    windowController?.window?.orderOut(nil)
-}
-```
+`NSApp.activate()` は macOS 14+ の LSUIElement アプリで動作が不安定なため、`NSRunningApplication.current.activate(options: .activateIgnoringOtherApps)` を使用する。
 
 ---
 
@@ -147,7 +152,7 @@ class PadPanel: NSPanel {
 }
 ```
 
-`hidesOnDeactivate = false` を設定し、非表示制御は `applicationDidResignActive` で手動管理する。
+`hidesOnDeactivate` は `!alwaysOnTop` に設定する。常前面OFF 時は macOS 標準のパネル自動非表示と、`NSWorkspace` 通知・`windowDidResignKey` のフォールバックを組み合わせて非表示を制御する。
 
 #### テキストスタックの構築順序（重要）
 
@@ -312,7 +317,7 @@ MenuPad/
 | ファイル I/O によるメインスレッドのブロック | 読み書きは `.utility` キューで非同期実行 |
 | ペースト時にリッチテキストが混入 | `isRichText = false` を設定 |
 | 右クリックメニュー後に左クリックが効かない | メニュー表示後 `statusItem.menu = nil` でリセット |
-| `LSUIElement = YES` でウィンドウが前面に出ない | `NSApp.activate()` を `makeKeyAndOrderFront` の前に呼ぶ（macOS 14以降は引数なし） |
+| `LSUIElement = YES` でウィンドウが前面に出ない | `NSRunningApplication.current.activate(options: .activateIgnoringOtherApps)` を使う（`NSApp.activate()` は macOS 14+ の LSUIElement アプリで不安定） |
 | スペース2回→ピリオド変換 | `insertText` をオーバーライドしてインターセプト |
 | VS Code 編集後に変更が反映されない | `needsReloadFromDisk` フラグでウィンドウ再表示時にリロード |
 
